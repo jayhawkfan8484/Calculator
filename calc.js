@@ -24,7 +24,9 @@ const display = document.querySelector('.display-vars');
 const buttons = document.querySelector('.btn-container');
 
 // Event Listeners
-buttons.addEventListener('click', getVariables)
+buttons.addEventListener('click', getVariables);
+buttons.addEventListener('mouseover', highlight);
+buttons.addEventListener('mouseout', unhighlight);
 
 function getVariables(e) {
 
@@ -78,6 +80,12 @@ function updateState(val) {
   display.textContent = values.varText;
 }
 
+function highlight(e){
+  e.target.classList.add('toggle');
+}
 
+function unhighlight(e){
+  e.target.classList.remove('toggle');
+}
 
 
