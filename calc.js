@@ -18,7 +18,6 @@ const values = {
   ansText: ''
 }
 
-
 const answer = document.querySelector('.display-answer');
 const display = document.querySelector('.display-vars');
 const buttons = document.querySelector('.btn-container');
@@ -27,6 +26,7 @@ const buttons = document.querySelector('.btn-container');
 buttons.addEventListener('click', getVariables);
 buttons.addEventListener('mouseover', highlight);
 buttons.addEventListener('mouseout', unhighlight);
+document.addEventListener('keydown', addKeyboard);
 
 function getVariables(e) {
 
@@ -46,12 +46,10 @@ function getVariables(e) {
       updateState(operator);
     }
   }
-  // console.log(valueString);
 }
 
 function extractValues(string) {
   let operators = ['+', '-', '*', '/'];
-  // let index;
 
   operators.forEach(ele => {
     if (string.indexOf(ele) != -1) {
@@ -69,10 +67,11 @@ function extractValues(string) {
 }
 
 function updateState(val) {
-  if (val === 'clear') {
+  if (val === 'clear' || val === 'Escape') {
     values.varText = '';
     answer.textContent = '';
-  } else if (val === 'del') {
+  } else if (val === 'del' || val === 'Backspace' || val ===
+    'Delete') {
     values.varText = values.varText.slice(0, -1);
   } else {
     values.varText += val;
@@ -80,12 +79,21 @@ function updateState(val) {
   display.textContent = values.varText;
 }
 
-function highlight(e){
+function highlight(e) {
   e.target.classList.add('toggle');
 }
 
-function unhighlight(e){
+function unhighlight(e) {
   e.target.classList.remove('toggle');
 }
 
+function addKeyboard(e) {
+  const acceptedKeys = [ '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 
+                         '/', '*', '+', '-', '.', 'Escape', 'Backspace', 'Delete'];
 
+  if (e.key === 'Enter') {
+    extractValues(values.varText);
+  } else if (acceptedKeys.includes(e.key)) {
+    updateState(e.key);
+  }
+}
